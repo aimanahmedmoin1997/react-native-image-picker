@@ -7,6 +7,7 @@ declare module "react-native-image-picker" {
         data: string;
         uri: string;
         origURL?: string;
+        originalFileURL?: string;
         isVertical: boolean;
         width: number;
         height: number;

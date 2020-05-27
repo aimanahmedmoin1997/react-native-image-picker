@@ -241,6 +241,15 @@ RCT_EXPORT_METHOD(showImagePicker:(NSDictionary *)options callback:(RCTResponseS
     dispatch_block_t dismissCompletionBlock = ^{
 
         NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
+
+        NSURL *originalImageURL;
+        if (@available(iOS 11, *)) {
+            // This seems to return the original file
+            originalImageURL = [info valueForKey:UIImagePickerControllerImageURL];
+        } else {
+            originalImageURL = nil;
+        }
+
         NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
 
         NSString *fileName;
@@ -400,6 +409,11 @@ RCT_EXPORT_METHOD(showImagePicker:(NSDictionary *)options callback:(RCTResponseS
             NSString *origURL = [imageURL absoluteString];
             if (origURL) {
               [self.response setObject:origURL forKey:@"origURL"];
+            }
+
+            NSString *originalFileURL = [originalImageURL absoluteString];
+            if (originalFileURL) {
+              [self.response setObject:originalFileURL forKey:@"originalFileURL"];
             }
 
             NSNumber *fileSizeValue = nil;
